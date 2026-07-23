@@ -4,12 +4,13 @@
 // (Project settings > General > Your apps > SDK setup and configuration)
 // ============================================================
 const firebaseConfig = {
-  apiKey: "COLA_AQUI",
-  authDomain: "COLA_AQUI",
-  projectId: "COLA_AQUI",
-  storageBucket: "COLA_AQUI",
-  messagingSenderId: "COLA_AQUI",
-  appId: "COLA_AQUI"
+  apiKey: "AIzaSyClBUTqnJA8EtTFVOODgc9InbC0xgJardo",
+  authDomain: "ducking-around-7df7c.firebaseapp.com",
+  projectId: "ducking-around-7df7c",
+  storageBucket: "ducking-around-7df7c.firebasestorage.app",
+  messagingSenderId: "46954309635",
+  appId: "1:46954309635:web:fe3c98e42a71593254c636",
+  measurementId: "G-H8Z9VNSNCE"
 };
 
 firebase.initializeApp(firebaseConfig);
