@@ -209,6 +209,22 @@
     border-top: 1px solid var(--line);
   }
 
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 20px;
+    padding: 8px 13px;
+    color: var(--moss);
+    background: var(--moss-pale);
+    border: 1.5px solid var(--moss-soft);
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .back-link:hover { transform: translateX(-3px); background: var(--moss-soft); }
+
   .loading {
     text-align: center;
     color: var(--ink-soft);
@@ -261,27 +277,62 @@ function getWeekDates() {
 // (tem de estar na mesma pasta, e ser carregado antes deste script)
 // ============================================================
 const TRACKER_DOC_ID = "meu-tracker-2026";
-const trackerRef = getTrackerRef(TRACKER_DOC_ID);
+const LOCAL_KEY = "ducking-around-passo-a-passo";
+let trackerRef = null;
+
+// A página continua a funcionar mesmo que o Firebase esteja indisponível.
+try {
+  if (typeof getTrackerRef === 'function') trackerRef = getTrackerRef(TRACKER_DOC_ID);
+} catch (error) {
+  console.warn('Firebase indisponível; a usar armazenamento local.', error);
+}
 
 let state = { days: {}, totalSessions: 0 };
 let openDayKey = null;
 
+function normaliseState(value) {
+  return {
+    days: value && value.days && typeof value.days === 'object' ? value.days : {},
+    totalSessions: Number.isFinite(Number(value && value.totalSessions))
+      ? Number(value.totalSessions) : 0
+  };
+}
+
 async function loadState() {
+  // Mostra primeiro os dados locais, se existirem.
+  try {
+    const localData = localStorage.getItem(LOCAL_KEY);
+    if (localData) state = normaliseState(JSON.parse(localData));
+  } catch (error) {
+    console.warn('Não foi possível ler os dados locais.', error);
+  }
+
+  // Se o Firebase estiver disponível, sincroniza com a nuvem.
+  if (!trackerRef) return;
   try {
     const doc = await trackerRef.get();
     if (doc.exists) {
-      state = doc.data();
+      state = normaliseState(doc.data());
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
     }
-  } catch (e) {
-    console.log('sem dados ainda, ou erro de ligação', e);
+  } catch (error) {
+    console.warn('Sem ligação ao Firebase; a usar dados locais.', error);
   }
 }
 
 async function saveState() {
+  state = normaliseState(state);
+  try {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('Não foi possível guardar localmente.', error);
+  }
+
+  if (!trackerRef) return;
   try {
     await trackerRef.set(state);
-  } catch (e) {
-    console.error('erro ao guardar', e);
+  } catch (error) {
+    console.warn('Não foi possível sincronizar com o Firebase.', error);
   }
 }
 
@@ -343,6 +394,7 @@ function render() {
   }
 
   app.innerHTML = `
+    <a class="back-link" href="index.html">← Voltar ao início</a>
     <h1>Passo a passo</h1>
     <p class="subtitle">Sem obrigação de todos os dias. O objetivo é aparecer mais vezes do que desapareces — nada mais.</p>
     ${pathHtml}
