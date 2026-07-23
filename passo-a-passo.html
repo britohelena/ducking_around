@@ -8,401 +8,204 @@
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
 
   :root {
-    --bg: #EDF1ED;
-    --surface: #FFFFFF;
-    --ink: #2B3A36;
-    --ink-soft: #5C6E68;
-    --moss: #6B8F71;
-    --moss-soft: #C9D9C6;
-    --moss-pale: #E4ECE3;
+    --sky-top: #DDF2E6;
+    --sky-mid: #EEF5E9;
+    --grass: #8AB99A;
+    --surface: rgba(255,253,246,.90);
+    --surface-strong: #FFFDF6;
+    --ink: #263A32;
+    --ink-soft: #5E7168;
+    --moss: #5F8D67;
+    --moss-dark: #355A3F;
+    --moss-pale: #E7F0E4;
     --apricot: #E8A87C;
-    --apricot-soft: #F6DEC9;
-    --line: #DCE4DA;
+    --cream: #FFF4D7;
   }
 
   * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
 
   body {
     margin: 0;
-    background: var(--bg);
     color: var(--ink);
     font-family: 'Work Sans', sans-serif;
-    display: flex;
-    justify-content: center;
-    padding: 32px 16px;
     min-height: 100vh;
+    overflow-x: hidden;
+    background:
+      linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-mid) 45%, #CFE6D3 76%, var(--grass) 100%);
   }
 
-  .card {
-    width: 100%;
-    max-width: 560px;
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 32px 28px 28px;
-    box-shadow: 0 1px 3px rgba(43,58,54,0.06), 0 8px 24px rgba(43,58,54,0.05);
-  }
-
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 500;
-    font-size: 28px;
-    margin: 0 0 4px;
-    letter-spacing: -0.01em;
-  }
-
-  .subtitle {
-    color: var(--ink-soft);
-    font-size: 14.5px;
-    margin: 0 0 28px;
-    line-height: 1.5;
-  }
-
-  /* Stepping stones path */
-  .path {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 8px;
-    position: relative;
-    padding: 0 2px;
-  }
-
-  .path::before {
-    content: '';
-    position: absolute;
-    left: 24px;
-    right: 24px;
-    top: 22px;
-    height: 2px;
-    background: var(--line);
-    z-index: 0;
-  }
-
-  .day {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    padding: 0;
-    flex: 1;
-  }
-
-  .stone {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--moss-pale);
-    border: 2px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
-  }
-
-  .day:hover .stone { transform: translateY(-2px); }
-
-  .day.done .stone {
-    background: var(--moss);
-    border-color: var(--moss);
-  }
-
-  .day.today .stone {
-    border-color: var(--apricot);
-  }
-
-  .day-label {
-    font-size: 12px;
-    color: var(--ink-soft);
-    font-weight: 500;
-  }
-
-  .day.today .day-label {
-    color: var(--ink);
-    font-weight: 600;
-  }
-
-  .stats {
-    display: flex;
-    gap: 12px;
-    margin: 28px 0 24px;
-  }
-
-  .stat {
-    flex: 1;
-    background: var(--moss-pale);
-    border-radius: 14px;
-    padding: 14px 16px;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-family: 'Fraunces', serif;
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--ink);
-    display: block;
-    line-height: 1.1;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin-top: 2px;
-  }
-
-  .prompt {
-    background: var(--apricot-soft);
-    border-radius: 14px;
-    padding: 16px 18px;
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--ink);
-    margin-bottom: 20px;
-    display: none;
-  }
-
-  .prompt.show { display: block; }
-
-  .prompt strong { font-weight: 600; }
-
-  .choices {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-
-  .choice-btn {
-    background: var(--surface);
-    border: 1.5px solid var(--moss);
-    color: var(--moss);
+  .cloud {
+    position: fixed;
+    width: 170px;
+    height: 48px;
     border-radius: 999px;
-    padding: 7px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.15s ease, color 0.15s ease;
+    background: rgba(255,255,255,.56);
+    z-index: 0;
+    animation: cloudFloat 28s linear infinite;
   }
+  .cloud::before, .cloud::after { content: ''; position: absolute; border-radius: 50%; background: inherit; }
+  .cloud::before { width: 70px; height: 70px; left: 28px; bottom: 0; }
+  .cloud::after { width: 88px; height: 88px; right: 18px; bottom: 0; }
+  .cloud.one { top: 8%; left: -210px; }
+  .cloud.two { top: 29%; left: -260px; transform: scale(.72); animation-delay: -13s; }
+  @keyframes cloudFloat { to { left: 110vw; } }
 
-  .choice-btn:hover {
-    background: var(--moss);
-    color: white;
+  .fireflies, .leaves { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .fireflies {
+    background-image:
+      radial-gradient(circle, rgba(255,225,122,.80) 0 2px, transparent 2.5px),
+      radial-gradient(circle, rgba(255,245,180,.72) 0 1.5px, transparent 2px);
+    background-size: 180px 180px, 240px 240px;
+    background-position: 25px 60px, 90px 140px;
+    animation: fireflyDrift 8s ease-in-out infinite;
+    opacity: .55;
   }
+  @keyframes fireflyDrift { 50% { transform: translateY(-12px); opacity: .28; } }
+  .leaves::before, .leaves::after { content: '🍃'; position: absolute; top: -10vh; font-size: 22px; opacity: .42; animation: leafFall 14s linear infinite; }
+  .leaves::before { left: 14vw; }
+  .leaves::after { left: 72vw; animation-delay: -6s; font-size: 18px; }
+  @keyframes leafFall { to { transform: translateY(115vh) translateX(55px) rotate(290deg); } }
 
-  .footer-note {
-    font-size: 12.5px;
-    color: var(--ink-soft);
-    text-align: center;
-    line-height: 1.6;
-    padding-top: 4px;
-    border-top: 1px solid var(--line);
-  }
+  .wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 56px; position: relative; z-index: 1; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
 
-  .loading {
-    text-align: center;
-    color: var(--ink-soft);
-    font-size: 14px;
-    padding: 40px 0;
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #FFFDF6; border: 2px solid var(--moss); color: var(--moss-dark);
+    border-radius: 999px; padding: 10px 15px; text-decoration: none; font-weight: 600;
+    box-shadow: 0 4px 0 rgba(53,90,63,.28); transition: transform .15s ease, box-shadow .15s ease;
   }
+  .back:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(53,90,63,.24); }
+
+  h1 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(34px, 6vw, 58px); line-height: .95; margin: 0; letter-spacing: -0.03em; text-align: right; }
+  .intro { background: var(--surface); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.65); border-radius: 22px; padding: 18px 20px; box-shadow: 0 10px 30px rgba(53,90,63,.12); line-height: 1.6; margin-bottom: 20px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, .8fr); gap: 18px; align-items: start; }
+  .panel { background: var(--surface); border: 1px solid rgba(255,255,255,.68); border-radius: 26px; box-shadow: 0 10px 30px rgba(53,90,63,.14); backdrop-filter: blur(8px); overflow: hidden; }
+  .tracker-panel { padding: 24px; }
+  .side-panel { padding: 20px; }
+
+  .garden { min-height: 270px; border-radius: 22px; padding: 34px 18px 24px; background: linear-gradient(to bottom, rgba(255,255,255,.45), rgba(231,240,228,.82)); overflow: hidden; position: relative; }
+  .garden::before { content: ''; position: absolute; left: -6%; right: -6%; bottom: 0; height: 92px; background: linear-gradient(to bottom, #8AB99A, #6EA579); border-radius: 50% 50% 0 0 / 42% 42% 0 0; }
+  .garden::after { content: ''; position: absolute; left: -8%; right: -8%; bottom: -26px; height: 88px; background: #6B4A2D; border-radius: 50% 50% 0 0 / 35% 35% 0 0; box-shadow: inset 0 15px 0 rgba(255,255,255,.08); }
+
+  .week-row { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(7, minmax(54px, 1fr)); gap: 10px; align-items: end; min-height: 210px; }
+  .day { border: 0; background: transparent; font-family: inherit; cursor: pointer; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 9px; min-height: 190px; }
+  .flower-bed { width: 62px; height: 142px; display: flex; align-items: end; justify-content: center; position: relative; }
+  .soil { position: absolute; bottom: 0; width: 54px; height: 18px; border-radius: 50%; background: #6B4A2D; box-shadow: inset 0 4px 0 rgba(255,255,255,.10); }
+  .seed { position: absolute; bottom: 18px; width: 10px; height: 10px; border-radius: 50%; background: #B9854E; opacity: .45; transform: scale(.75); transition: opacity .18s ease, transform .18s ease; }
+  .day:hover .seed { opacity: .85; transform: scale(1); }
+
+  .flower { position: absolute; bottom: 14px; width: 54px; height: 118px; transform-origin: bottom center; }
+  .day.just-grown .flower { animation: growFlower .45s ease-out both; }
+  .stem { position: absolute; bottom: 0; left: 50%; width: 5px; height: 78px; background: #4F8B56; border-radius: 999px; transform: translateX(-50%); }
+  .stem::before, .stem::after { content: ''; position: absolute; width: 22px; height: 12px; background: #67A76A; border-radius: 999px 0 999px 0; top: 42px; }
+  .stem::before { left: -19px; transform: rotate(-18deg); }
+  .stem::after { right: -19px; transform: scaleX(-1) rotate(-18deg); }
+  .bloom { position: absolute; top: 4px; left: 50%; width: 38px; height: 38px; transform: translateX(-50%); }
+  .bloom::before { content: '✿'; position: absolute; inset: 0; display: grid; place-items: center; color: #E88AA2; font-size: 42px; line-height: 1; text-shadow: 0 2px 0 rgba(0,0,0,.08); }
+  .day:nth-child(2n) .bloom::before { color: #E8A87C; }
+  .day:nth-child(3n) .bloom::before { color: #8B7BAE; }
+  .day.today .soil { outline: 4px solid rgba(232,168,124,.32); }
+  .day-label { font-size: 12px; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; background: rgba(255,253,246,.72); border-radius: 999px; padding: 4px 7px; }
+  @keyframes growFlower { from { transform: scaleY(.05); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+
+  .prompt { margin-top: 18px; background: #F7DDC8; border: 1px solid rgba(232,168,124,.25); border-radius: 18px; padding: 16px 18px; font-size: 14px; line-height: 1.55; color: var(--ink); display: none; }
+  .prompt.show { display: block; animation: popIn .25s ease; }
+  @keyframes popIn { from { transform: translateY(6px); opacity: 0; } }
+  .choices { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .choice-btn { background: var(--surface-strong); border: 1.5px solid var(--moss); color: var(--moss-dark); border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .15s ease, color .15s ease, transform .15s ease; }
+  .choice-btn:hover { background: var(--moss); color: white; transform: translateY(-2px); }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+  .stat { background: rgba(255,253,246,.86); border: 1px solid rgba(255,255,255,.75); border-radius: 18px; padding: 16px; text-align: center; }
+  .stat-num { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; color: var(--ink); display: block; line-height: 1.1; }
+  .stat-label { font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
+  .side-title { font-family: 'Fraunces', serif; font-weight: 500; font-size: 23px; margin: 0 0 8px; }
+  .mini-note { margin: 0 0 16px; color: var(--ink-soft); font-size: 13.5px; line-height: 1.5; }
+  .habit-list { display: grid; gap: 10px; }
+  .habit { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(255,253,246,.86); border: 1px solid rgba(255,255,255,.75); border-radius: 16px; padding: 12px 13px; }
+  .habit span { font-weight: 600; font-size: 13.5px; }
+  .toggle { width: 44px; height: 26px; border-radius: 999px; border: 0; background: #DCE7DA; cursor: pointer; position: relative; transition: background .18s ease; }
+  .toggle::after { content: ''; position: absolute; top: 4px; left: 4px; width: 18px; height: 18px; border-radius: 50%; background: white; box-shadow: 0 2px 5px rgba(0,0,0,.16); transition: transform .18s ease; }
+  .toggle.on { background: var(--moss); }
+  .toggle.on::after { transform: translateX(18px); }
+  .footer-note { font-size: 12.5px; color: var(--ink-soft); text-align: center; line-height: 1.6; margin: 16px 0 0; }
+  .loading { text-align: center; color: var(--ink-soft); font-size: 14px; padding: 36px 0; }
+
+  @media (max-width: 850px) { .layout { grid-template-columns: 1fr; } h1 { text-align: left; } .top { flex-direction: column-reverse; align-items: flex-start; } }
+  @media (max-width: 620px) { .wrap { width: min(100% - 22px, 1080px); padding-top: 16px; } .tracker-panel { padding: 16px; } .week-row { grid-template-columns: repeat(7, 56px); overflow-x: auto; padding-bottom: 10px; } .stats { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .cloud, .fireflies, .leaves::before, .leaves::after, .flower, .prompt.show { animation: none; } }
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 </head>
 <body>
-  <div class="card" id="app">
-    <a class="back-link" href="index.html">← Voltar ao início</a>
-    <div class="loading">a preparar…</div>
-  </div>
-
+  <div class="cloud one" aria-hidden="true"></div>
+  <div class="cloud two" aria-hidden="true"></div>
+  <div class="leaves" aria-hidden="true"></div>
+  <div class="fireflies" aria-hidden="true"></div>
+  <main class="wrap">
+    <header class="top"><a class="back" href="index.html">← Voltar à lagoa</a><h1>Passo a passo</h1></header>
+    <p class="intro">Um jardim semanal: cada dia começa como uma sementinha. Quando registas movimento, nasce uma flor. Na segunda-feira o jardim da vista atual recomeça limpo, sem julgamento.</p>
+    <section class="layout" id="app"><div class="panel tracker-panel"><div class="loading">a preparar o jardim…</div></div></section>
+  </main>
 <script>
 const WEEKDAYS = ['seg','ter','qua','qui','sex','sáb','dom'];
 const ACTIVITIES = [
-  { key: 'walk', label: '🚶 Caminhada' },
-  { key: 'dance', label: '💃 Dança' },
-  { key: 'yoga', label: '🧘 Yoga/suave' },
-  { key: 'other', label: '✨ Outro' },
+  { key: 'walk', label: 'Caminhada' },
+  { key: 'dance', label: 'Dança' },
+  { key: 'yoga', label: 'Yoga/suave' },
+  { key: 'other', label: 'Outro' },
 ];
-
-function isoDate(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-function getWeekDates() {
-  const now = new Date();
-  const day = (now.getDay() + 6) % 7; // 0 = Monday
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - day);
-  monday.setHours(0,0,0,0);
-  const dates = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    dates.push(d);
-  }
-  return dates;
-}
-
-// ============================================================
-// Este ficheiro usa a configuração partilhada em firebase-config.js
-// (tem de estar na mesma pasta, e ser carregado antes deste script)
-// ============================================================
+const HABITS = [
+  { key: 'water', label: 'Água por perto' },
+  { key: 'stretch', label: 'Alongar 2 minutos' },
+  { key: 'outside', label: 'Apanhar ar' },
+];
 const TRACKER_DOC_ID = "meu-tracker-2026";
-const trackerRef = getTrackerRef(TRACKER_DOC_ID);
-
-let state = { days: {}, totalSessions: 0 };
+const LOCAL_KEY = "ducking-around-passo-a-passo";
+let trackerRef = null;
+try { if (typeof getTrackerRef === 'function') trackerRef = getTrackerRef(TRACKER_DOC_ID); } catch (error) { console.warn('Firebase indisponível; a usar armazenamento local.', error); }
+let state = { days: {}, habits: {}, totalSessions: 0 };
 let openDayKey = null;
-
-async function loadState() {
-  try {
-    const doc = await trackerRef.get();
-    if (doc.exists) {
-      state = doc.data();
-    }
-  } catch (e) {
-    console.log('sem dados ainda, ou erro de ligação', e);
-  }
-}
-
-async function saveState() {
-  try {
-    await trackerRef.set(state);
-  } catch (e) {
-    console.error('erro ao guardar', e);
-  }
-}
-
-function computeStreak() {
-  // consecutive days up to today (including today only if done) counting backwards
-  let streak = 0;
-  let cursor = new Date();
-  cursor.setHours(0,0,0,0);
-  while (true) {
-    const key = isoDate(cursor);
-    if (state.days[key]) {
-      streak++;
-      cursor.setDate(cursor.getDate() - 1);
-    } else {
-      break;
-    }
-  }
-  return streak;
-}
-
+let justGrownKey = null;
+function isoDate(d) { const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; }
+function getWeekDates() { const now = new Date(); const day = (now.getDay() + 6) % 7; const monday = new Date(now); monday.setDate(now.getDate() - day); monday.setHours(0,0,0,0); return Array.from({length: 7}, (_, i) => { const d = new Date(monday); d.setDate(monday.getDate() + i); return d; }); }
+function normaliseState(value) { const safe = value && typeof value === 'object' ? value : {}; return { days: safe.days && typeof safe.days === 'object' ? safe.days : {}, habits: safe.habits && typeof safe.habits === 'object' ? safe.habits : {}, totalSessions: Number.isFinite(Number(safe.totalSessions)) ? Number(safe.totalSessions) : 0 }; }
+async function loadState() { try { const localData = localStorage.getItem(LOCAL_KEY); if (localData) state = normaliseState(JSON.parse(localData)); } catch (error) { console.warn('Não foi possível ler os dados locais.', error); } if (!trackerRef) return; try { const doc = await trackerRef.get(); if (doc.exists) { state = normaliseState(doc.data()); localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } } catch (error) { console.warn('Sem ligação ao Firebase; a usar dados locais.', error); } }
+async function saveState() { state = normaliseState(state); try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (error) { console.warn('Não foi possível guardar localmente.', error); } if (!trackerRef) return; try { await trackerRef.set(state); } catch (error) { console.warn('Não foi possível sincronizar com o Firebase.', error); } }
+function computeStreak() { let streak = 0; let cursor = new Date(); cursor.setHours(0,0,0,0); while (true) { const key = isoDate(cursor); if (state.days[key]) { streak++; cursor.setDate(cursor.getDate() - 1); } else break; } return streak; }
 function render() {
   const app = document.getElementById('app');
   const weekDates = getWeekDates();
   const todayKey = isoDate(new Date());
+  const todayHabits = state.habits[todayKey] || {};
   const doneThisWeek = weekDates.filter(d => state.days[isoDate(d)]).length;
   const streak = computeStreak();
-
-  let pathHtml = '<div class="path">';
+  let gardenHtml = '<div class="garden"><div class="week-row">';
   weekDates.forEach((d, i) => {
-    const key = isoDate(d);
-    const done = !!state.days[key];
-    const isToday = key === todayKey;
-    pathHtml += `
-      <button class="day ${done ? 'done' : ''} ${isToday ? 'today' : ''}" data-key="${key}">
-        <div class="stone">${done ? '✓' : ''}</div>
-        <div class="day-label">${WEEKDAYS[i]}</div>
-      </button>`;
+    const key = isoDate(d); const done = !!state.days[key]; const isToday = key === todayKey;
+    gardenHtml += `<button class="day ${done ? 'done' : ''} ${isToday ? 'today' : ''} ${key === justGrownKey ? 'just-grown' : ''}" data-key="${key}" aria-label="${WEEKDAYS[i]}"><div class="flower-bed"><span class="soil"></span>${done ? '<span class="flower"><span class="stem"></span><span class="bloom"></span></span>' : '<span class="seed"></span>'}</div><div class="day-label">${WEEKDAYS[i]}</div></button>`;
   });
-  pathHtml += '</div>';
-
+  gardenHtml += '</div></div>';
   let promptHtml = '';
   if (openDayKey) {
     const done = state.days[openDayKey];
-    if (done) {
-      promptHtml = `
-        <div class="prompt show">
-          <strong>Registado: ${done.activity || 'movimento'}.</strong> Já contou — não precisas de fazer mais nada hoje.
-          <div class="choices"><button class="choice-btn" data-action="undo">desfazer</button></div>
-        </div>`;
-    } else {
-      promptHtml = `
-        <div class="prompt show">
-          <strong>O que fizeste (ou vais fazer) hoje?</strong> Qualquer coisa a partir de 5 minutos conta.
-          <div class="choices">
-            ${ACTIVITIES.map(a => `<button class="choice-btn" data-activity="${a.key}">${a.label}</button>`).join('')}
-          </div>
-        </div>`;
-    }
+    promptHtml = done ? `<div class="prompt show"><strong>Registado: ${done.activity || 'movimento'}.</strong> A flor desse dia já nasceu.<div class="choices"><button class="choice-btn" data-action="undo">desfazer</button></div></div>` : `<div class="prompt show"><strong>O que fizeste, ou vais fazer?</strong> Qualquer coisa a partir de 5 minutos conta.<div class="choices">${ACTIVITIES.map(a => `<button class="choice-btn" data-activity="${a.key}">${a.label}</button>`).join('')}</div></div>`;
   }
-
-  app.innerHTML = `
-    <a class="back-link" href="index.html">← Voltar ao início</a>
-    <h1>Passo a passo</h1>
-    <p class="subtitle">Sem obrigação de todos os dias. O objetivo é aparecer mais vezes do que desapareces — nada mais.</p>
-    ${pathHtml}
-    ${promptHtml}
-    <div class="stats">
-      <div class="stat">
-        <span class="stat-num">${streak}</span>
-        <span class="stat-label">dias seguidos</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">${doneThisWeek}/7</span>
-        <span class="stat-label">esta semana</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">${state.totalSessions}</span>
-        <span class="stat-label">sessões no total</span>
-      </div>
-    </div>
-    <p class="footer-note">Um dia em branco não apaga os anteriores. Amanhã é sempre uma nova oportunidade, sem contas a acertar.</p>
-  `;
-
-  app.querySelectorAll('.day').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const key = btn.dataset.key;
-      openDayKey = (openDayKey === key) ? null : key;
-      render();
-    });
-  });
-
-  app.querySelectorAll('.choice-btn[data-activity]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const activityKey = btn.dataset.activity;
-      const activity = ACTIVITIES.find(a => a.key === activityKey);
-      if (!state.days[openDayKey]) {
-        state.totalSessions++;
-      }
-      state.days[openDayKey] = { activity: activity.label };
-      await saveState();
-      render();
-    });
-  });
-
+  const habitHtml = HABITS.map(h => `<div class="habit"><span>${h.label}</span><button class="toggle ${todayHabits[h.key] ? 'on' : ''}" data-habit="${h.key}" aria-label="${h.label}"></button></div>`).join('');
+  app.innerHTML = `<section class="panel tracker-panel">${gardenHtml}${promptHtml}<div class="stats"><div class="stat"><span class="stat-num">${streak}</span><span class="stat-label">dias seguidos</span></div><div class="stat"><span class="stat-num">${doneThisWeek}/7</span><span class="stat-label">flores esta semana</span></div><div class="stat"><span class="stat-num">${state.totalSessions}</span><span class="stat-label">sessões no total</span></div></div><p class="footer-note">Se um dia fica só sementinha, continua a fazer parte do jardim. Na segunda-feira, começa uma vista nova.</p></section><aside class="panel side-panel"><h2 class="side-title">Pequenos extras de hoje</h2><p class="mini-note">Não são obrigações. São mini-checkpoints simpáticos para dias em que apetece cuidar mais um bocadinho.</p><div class="habit-list">${habitHtml}</div></aside>`;
+  app.querySelectorAll('.day').forEach(btn => btn.addEventListener('click', () => { const key = btn.dataset.key; openDayKey = (openDayKey === key) ? null : key; render(); }));
+  app.querySelectorAll('.choice-btn[data-activity]').forEach(btn => btn.addEventListener('click', async () => { const activity = ACTIVITIES.find(a => a.key === btn.dataset.activity); if (!state.days[openDayKey]) { state.totalSessions++; justGrownKey = openDayKey; } state.days[openDayKey] = { activity: activity ? activity.label : 'movimento' }; await saveState(); render(); }));
   const undoBtn = app.querySelector('.choice-btn[data-action="undo"]');
-  if (undoBtn) {
-    undoBtn.addEventListener('click', async () => {
-      if (state.days[openDayKey]) {
-        delete state.days[openDayKey];
-        state.totalSessions = Math.max(0, state.totalSessions - 1);
-      }
-      await saveState();
-      openDayKey = null;
-      render();
-    });
-  }
+  if (undoBtn) undoBtn.addEventListener('click', async () => { if (state.days[openDayKey]) { delete state.days[openDayKey]; state.totalSessions = Math.max(0, state.totalSessions - 1); } await saveState(); openDayKey = null; render(); });
+  app.querySelectorAll('.toggle[data-habit]').forEach(btn => btn.addEventListener('click', async () => { const key = btn.dataset.habit; const dateKey = isoDate(new Date()); if (!state.habits[dateKey]) state.habits[dateKey] = {}; state.habits[dateKey][key] = !state.habits[dateKey][key]; await saveState(); render(); }));
+  justGrownKey = null;
 }
-
-(async function init() {
-  render();
-  await loadState();
-  render();
-})();
+(async function init() { render(); await loadState(); render(); })();
 </script>
 </body>
 </html>

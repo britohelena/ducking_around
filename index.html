@@ -5,31 +5,266 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ducking around</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
-:root{--ink:#2B2A24;--ink-soft:#6B6455;--surface:#FFFDF6;--duck-bill:#D9873F;--card-line:#EFE2B8}
-*{box-sizing:border-box} html,body{min-height:100%}
-body{margin:0;color:var(--ink);font-family:'Work Sans',sans-serif;display:flex;justify-content:center;align-items:center;padding:32px 16px;min-height:100vh;overflow-x:hidden;background:#453A63;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,32 C35,10 65,54 100,32 C135,10 165,54 200,32 L200,60 L0,60 Z' fill='%235FA8C4'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,34 C30,16 70,52 100,34 C130,16 170,52 200,34 L200,60 L0,60 Z' fill='%23A9D8E6'/%3E%3C/svg%3E"),linear-gradient(to bottom,#362C52 0%,#4B4670 38%,#6C8AA3 58%,#4E8FAE 100%);background-repeat:repeat-x,repeat-x,no-repeat;background-position:left bottom,left bottom,top;background-size:260px 190px,180px 130px,100% 100%;animation:seaDrift 10s linear infinite}
-@keyframes seaDrift{to{background-position:-260px bottom,-180px bottom,top}}
-.card{width:100%;max-width:560px;background:var(--surface);border:1px solid var(--card-line);border-radius:20px;padding:66px 28px 28px;box-shadow:0 1px 3px #0002,0 12px 32px #0005;position:relative;overflow:hidden}
-.wave-top{position:absolute;inset:0 0 auto;height:48px;overflow:hidden;background:#453A63}
-.wave-track{display:flex;width:200%;height:48px;animation:cardWaves 5s linear infinite}
-.wave-track svg{width:50%;height:48px;flex:none;display:block}
-@keyframes cardWaves{to{transform:translateX(-50%)}}
-h1{font-family:'Fraunces',serif;font-weight:500;font-size:26px;margin:0 0 6px}.subtitle{color:var(--ink-soft);font-size:14.5px;margin:0 0 28px;line-height:1.5}.page-list{display:flex;flex-direction:column;gap:12px}.page-link{display:flex;align-items:center;gap:14px;background:#FCF3D9;border:1.5px solid transparent;border-radius:16px;padding:16px 18px;text-decoration:none;color:inherit;transition:.2s}.page-link:hover{transform:translateY(-2px);border-color:var(--duck-bill);background:#FBEBC0}.page-text{flex:1}.page-title{font-family:'Fraunces',serif;font-size:17px;margin:0 0 2px}.page-desc{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.4}.page-arrow{color:var(--duck-bill);font-size:18px}.footer-note{font-size:12.5px;color:var(--ink-soft);text-align:center;line-height:1.6;padding-top:20px;margin-top:24px;border-top:1px solid var(--card-line)}
-@media(prefers-reduced-motion:reduce){body,.wave-track{animation:none}}
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #2B2A24;
+    --ink-soft: #6B6455;
+    --surface: #FFFDF6;
+    --duck-bill: #D9873F;
+    --card-line: #EFE2B8;
+    --wave-a: #A9D8E6;
+    --wave-b: #5FA8C4;
+    --wave-c: #8B7BAE;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background-color: #453A63;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,32 C35,10 65,54 100,32 C135,10 165,54 200,32 L200,60 L0,60 Z' fill='%235FA8C4'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,34 C30,16 70,52 100,34 C130,16 170,52 200,34 L200,60 L0,60 Z' fill='%23A9D8E6'/%3E%3C/svg%3E"),
+      linear-gradient(to bottom, #272443 0%, #41385F 34%, #6C8AA3 58%, #4E8FAE 100%);
+    background-repeat: repeat-x, repeat-x, no-repeat;
+    background-position: left bottom, left bottom, top;
+    background-size: 260px 190px, 180px 130px, 100% 100%;
+    animation: seaDrift 10s linear infinite;
+  }
+
+  @keyframes seaDrift {
+    from { background-position: 0 bottom, 0 bottom, top; }
+    to { background-position: -260px bottom, -180px bottom, top; }
+  }
+
+  .night-sky {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 50vh;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .moon {
+    position: absolute;
+    top: 9vh;
+    right: 4vw;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #FFF9D8 0 20%, #FFF0A8 55%, #E8C878 100%);
+    box-shadow: 0 0 28px rgba(255, 240, 168, .42), 0 0 78px rgba(255, 240, 168, .20);
+    animation: moonFloat 7s ease-in-out infinite;
+  }
+
+  .moon::before,
+  .moon::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(213, 184, 107, .22);
+  }
+
+  .moon::before { width: 16px; height: 16px; left: 22px; top: 18px; }
+  .moon::after { width: 10px; height: 10px; right: 21px; bottom: 22px; }
+
+  @keyframes moonFloat { 50% { transform: translateY(8px); } }
+
+  .stars,
+  .stars::before,
+  .stars::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background-repeat: repeat;
+  }
+
+  .stars {
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.4px),
+      radial-gradient(circle, rgba(255,237,170,.85) 0 1px, transparent 1.2px);
+    background-size: 120px 90px, 190px 140px;
+    background-position: 12px 18px, 54px 72px;
+    animation: starDrift 24s linear infinite;
+  }
+
+  .stars::before {
+    background-image: radial-gradient(circle, rgba(255,255,255,.80) 0 1px, transparent 1.2px);
+    background-size: 150px 110px;
+    background-position: 80px 36px;
+    animation: twinkle 3.8s ease-in-out infinite;
+  }
+
+  .stars::after {
+    width: 110px;
+    height: 2px;
+    top: 19vh;
+    left: -130px;
+    right: auto;
+    bottom: auto;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent);
+    transform: rotate(-18deg);
+    animation: shootingStar 9s linear infinite;
+  }
+
+  @keyframes starDrift { to { background-position: 132px 18px, 244px 72px; } }
+  @keyframes twinkle { 50% { opacity: .35; } }
+  @keyframes shootingStar {
+    0%, 58% { transform: translateX(0) rotate(-18deg); opacity: 0; }
+    62% { opacity: 1; }
+    74% { transform: translateX(120vw) rotate(-18deg); opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .card {
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+    padding: 82px 28px 28px;
+    border: 0;
+    border-radius: 20px;
+    background: transparent;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56px;
+    bottom: 0;
+    background: var(--surface);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 12px 32px rgba(0,0,0,0.22);
+    z-index: -1;
+  }
+
+  .wave-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    line-height: 0;
+    z-index: 0;
+  }
+
+  .wave-track {
+    display: flex;
+    width: 200%;
+    height: 56px;
+    animation: cardWaves 5s linear infinite;
+  }
+
+  .wave-track svg {
+    width: 50%;
+    height: 56px;
+    flex: none;
+    display: block;
+  }
+
+  @keyframes cardWaves { to { transform: translateX(-50%); } }
+
+  .content { position: relative; z-index: 1; }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    margin: 0 0 28px;
+    line-height: 1.5;
+  }
+
+  .page-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .page-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #FCF3D9;
+    border: 1.5px solid transparent;
+    border-radius: 16px;
+    padding: 16px 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .page-link:hover { transform: translateY(-2px); border-color: var(--duck-bill); background: #FBEBC0; }
+  .page-text { flex: 1; min-width: 0; }
+  .page-title { font-family: 'Fraunces', serif; font-weight: 500; font-size: 17px; margin: 0 0 2px; }
+  .page-desc { font-size: 13px; color: var(--ink-soft); margin: 0; line-height: 1.4; }
+  .page-arrow { color: var(--duck-bill); font-size: 18px; flex-shrink: 0; }
+
+  .footer-note {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.6;
+    padding-top: 20px;
+    margin-top: 24px;
+    border-top: 1px solid var(--card-line);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body, .wave-track, .moon, .stars, .stars::before, .stars::after { animation: none; }
+  }
 </style>
 </head>
 <body>
-<main class="card">
-  <div class="wave-top" aria-hidden="true"><div class="wave-track">
-    <svg viewBox="0 0 500 48" preserveAspectRatio="none"><path d="M0 22 C45 4 85 4 125 22 S210 40 250 22 S335 4 375 22 S460 40 500 22 V48 H0Z" fill="#A9D8E6"/><path d="M0 31 C45 14 85 14 125 29 S210 44 250 29 S335 14 375 29 S460 44 500 29 V48 H0Z" fill="#5FA8C4"/><path d="M0 39 C50 26 90 26 130 38 S220 50 250 38 S340 26 380 38 S465 50 500 38 V48 H0Z" fill="#8B7BAE"/></svg>
-    <svg viewBox="0 0 500 48" preserveAspectRatio="none"><path d="M0 22 C45 4 85 4 125 22 S210 40 250 22 S335 4 375 22 S460 40 500 22 V48 H0Z" fill="#A9D8E6"/><path d="M0 31 C45 14 85 14 125 29 S210 44 250 29 S335 14 375 29 S460 44 500 29 V48 H0Z" fill="#5FA8C4"/><path d="M0 39 C50 26 90 26 130 38 S220 50 250 38 S340 26 380 38 S465 50 500 38 V48 H0Z" fill="#8B7BAE"/></svg>
-  </div></div>
-  <h1>As águas agitam-se. Algo desperta.</h1><p class="subtitle">Escolhe um caminho — se te atreves.</p>
-  <nav class="page-list" aria-label="Páginas">
-    <a class="page-link" href="passo-a-passo.html"><div class="page-text"><p class="page-title">Passo a passo</p><p class="page-desc">Regista o teu movimento diário, sem pressão.</p></div><span class="page-arrow">→</span></a>
-    <a class="page-link" href="equipa-pokemon.html"><div class="page-text"><p class="page-title">A minha equipa Pokémon</p><p class="page-desc">Seis companheiros, seis maneiras de causar confusão.</p></div><span class="page-arrow">→</span></a>
-  </nav>
-  <p class="footer-note">Mais páginas hão de emergir das águas, com o tempo.</p>
-</main>
-</body></html>
+  <div class="night-sky" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="moon"></div>
+  </div>
+
+  <main class="card">
+    <div class="wave-top" aria-hidden="true">
+      <div class="wave-track">
+        <svg viewBox="0 0 500 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,24 C45,6 85,6 125,24 S210,42 250,24 S335,6 375,24 S460,42 500,24 L500,56 L0,56 Z" fill="#A9D8E6"/>
+          <path d="M0,33 C45,16 85,16 125,31 S210,46 250,31 S335,16 375,31 S460,46 500,31 L500,56 L0,56 Z" fill="#5FA8C4"/>
+          <path d="M0,41 C50,28 90,28 130,40 S220,52 250,40 S340,28 380,40 S465,52 500,40 L500,56 L0,56 Z" fill="#8B7BAE" opacity="0.92"/>
+        </svg>
+        <svg viewBox="0 0 500 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,24 C45,6 85,6 125,24 S210,42 250,24 S335,6 375,24 S460,42 500,24 L500,56 L0,56 Z" fill="#A9D8E6"/>
+          <path d="M0,33 C45,16 85,16 125,31 S210,46 250,31 S335,16 375,31 S460,46 500,31 L500,56 L0,56 Z" fill="#5FA8C4"/>
+          <path d="M0,41 C50,28 90,28 130,40 S220,52 250,40 S340,28 380,40 S465,52 500,40 L500,56 L0,56 Z" fill="#8B7BAE" opacity="0.92"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1>As águas agitam-se. Algo desperta.</h1>
+      <p class="subtitle">Escolhe um caminho — se te atreves.</p>
+      <nav class="page-list" aria-label="Páginas">
+        <a class="page-link" href="passo-a-passo.html"><div class="page-text"><p class="page-title">Passo a passo</p><p class="page-desc">Regista o teu movimento diário, sem pressão.</p></div><div class="page-arrow">→</div></a>
+        <a class="page-link" href="equipa-pokemon.html"><div class="page-text"><p class="page-title">A minha equipa Pokémon</p><p class="page-desc">Seis companheiros, seis maneiras de causar confusão.</p></div><div class="page-arrow">→</div></a>
+      </nav>
+      <p class="footer-note">Mais páginas hão de emergir das águas, com o tempo.</p>
+    </div>
+  </main>
+</body>
+</html>
