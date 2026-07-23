@@ -7,6 +7,7 @@ Um cantinho pessoal que vai crescendo aos poucos.
 - 🚶 **Passo a passo** — tracker de movimento diário, sem culpa por dias em branco
 
 ## O que aí vem
+- daily planner (trabalho, exercício, certificações, etc)
 - (por preencher conforme as ideias forem nascendo)
 
 
