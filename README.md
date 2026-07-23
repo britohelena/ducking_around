@@ -1,2 +1,13 @@
-# ducking_around
-quack quack
+# 🦆 ducking around
+Quack Quack
+
+Um cantinho pessoal que vai crescendo aos poucos.
+
+## O que já existe
+- 🚶 **Passo a passo** — tracker de movimento diário, sem culpa por dias em branco
+
+## O que aí vem
+- (por preencher conforme as ideias forem nascendo)
+
+
+🔗 https://britohelena.github.io/ducking_around/
