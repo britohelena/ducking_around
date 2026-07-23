@@ -8,6 +8,8 @@ Um cantinho pessoal que vai crescendo aos poucos.
 
 ## O que aí vem
 - daily planner (trabalho, exercício, certificações, etc)
+- pokemon team
+- cross stitch projects
 - (por preencher conforme as ideias forem nascendo)
 
 
