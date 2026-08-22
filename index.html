@@ -8,14 +8,13 @@
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
 
   :root {
-    --ink: #2B2A24;
-    --ink-soft: #6B6455;
-    --surface: #FFFDF6;
-    --duck-bill: #D9873F;
-    --card-line: #EFE2B8;
-    --wave-a: #A9D8E6;
-    --wave-b: #5FA8C4;
-    --wave-c: #8B7BAE;
+    --ink: #22301D;
+    --ink-soft: #62705A;
+    --surface: #FBF6E6;
+    --accent: #C98A3D;
+    --card-bg: #F4EED4;
+    --card-bg-hover: #ECE3C2;
+    --card-line: #E2D6AC;
   }
 
   * { box-sizing: border-box; }
@@ -32,23 +31,23 @@
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    background-color: #453A63;
+    background-color: #081B11;
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,32 C35,10 65,54 100,32 C135,10 165,54 200,32 L200,60 L0,60 Z' fill='%235FA8C4'/%3E%3C/svg%3E"),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,34 C30,16 70,52 100,34 C130,16 170,52 200,34 L200,60 L0,60 Z' fill='%23A9D8E6'/%3E%3C/svg%3E"),
-      linear-gradient(to bottom, #272443 0%, #41385F 34%, #6C8AA3 58%, #4E8FAE 100%);
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,60 L0,38 L9,50 L15,22 L21,42 L29,10 L36,40 L44,18 L51,44 L59,24 L66,50 L74,16 L82,44 L90,22 L97,50 L105,18 L113,46 L120,26 L127,54 L135,20 L143,48 L150,28 L158,56 L166,22 L174,50 L181,30 L189,58 L197,24 L200,40 L200,60 Z' fill='%230A2015'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cpath d='M0,60 L0,34 L11,46 L18,14 L26,38 L35,6 L43,34 L52,10 L60,36 L69,14 L77,42 L86,8 L94,36 L103,12 L111,40 L120,10 L128,38 L137,14 L145,42 L154,8 L162,34 L171,12 L179,38 L188,16 L196,44 L200,30 L200,60 Z' fill='%231C4429'/%3E%3C/svg%3E"),
+      linear-gradient(to bottom, #040F0A 0%, #0A2115 32%, #123B24 62%, #1E5233 100%);
     background-repeat: repeat-x, repeat-x, no-repeat;
     background-position: left bottom, left bottom, top;
     background-size: 260px 190px, 180px 130px, 100% 100%;
-    animation: seaDrift 10s linear infinite;
+    animation: forestDrift 16s linear infinite;
   }
 
-  @keyframes seaDrift {
+  @keyframes forestDrift {
     from { background-position: 0 bottom, 0 bottom, top; }
     to { background-position: -260px bottom, -180px bottom, top; }
   }
 
-  .night-sky {
+  .canopy-sky {
     position: fixed;
     inset: 0 0 auto 0;
     height: 50vh;
@@ -59,13 +58,13 @@
 
   .moon {
     position: absolute;
-    top: 9vh;
-    right: 4vw;
-    width: 78px;
-    height: 78px;
+    top: 8vh;
+    right: 5vw;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #FFF9D8 0 20%, #FFF0A8 55%, #E8C878 100%);
-    box-shadow: 0 0 28px rgba(255, 240, 168, .42), 0 0 78px rgba(255, 240, 168, .20);
+    background: radial-gradient(circle at 35% 30%, #FFF9D8 0 20%, #F3E9A8 55%, #D8C878 100%);
+    box-shadow: 0 0 26px rgba(244, 233, 168, .38), 0 0 74px rgba(244, 233, 168, .18);
     animation: moonFloat 7s ease-in-out infinite;
   }
 
@@ -74,59 +73,30 @@
     content: '';
     position: absolute;
     border-radius: 50%;
-    background: rgba(213, 184, 107, .22);
+    background: rgba(180, 184, 107, .22);
   }
 
-  .moon::before { width: 16px; height: 16px; left: 22px; top: 18px; }
-  .moon::after { width: 10px; height: 10px; right: 21px; bottom: 22px; }
+  .moon::before { width: 15px; height: 15px; left: 20px; top: 16px; }
+  .moon::after { width: 9px; height: 9px; right: 19px; bottom: 20px; }
 
   @keyframes moonFloat { 50% { transform: translateY(8px); } }
 
-  .stars,
-  .stars::before,
-  .stars::after {
+  .firefly {
     position: absolute;
-    inset: 0;
-    content: '';
-    background-repeat: repeat;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FFF6D2 0%, #F4D98A 55%, transparent 76%);
+    box-shadow: 0 0 9px 2px rgba(244, 217, 138, .55);
+    animation: fireflyFloat 7s ease-in-out infinite, fireflyGlow 3.4s ease-in-out infinite;
   }
-
-  .stars {
-    background-image:
-      radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.4px),
-      radial-gradient(circle, rgba(255,237,170,.85) 0 1px, transparent 1.2px);
-    background-size: 120px 90px, 190px 140px;
-    background-position: 12px 18px, 54px 72px;
-    animation: starDrift 24s linear infinite;
+  @keyframes fireflyFloat {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(14px, -16px); }
+    50% { transform: translate(-8px, -6px); }
+    75% { transform: translate(10px, 12px); }
   }
-
-  .stars::before {
-    background-image: radial-gradient(circle, rgba(255,255,255,.80) 0 1px, transparent 1.2px);
-    background-size: 150px 110px;
-    background-position: 80px 36px;
-    animation: twinkle 3.8s ease-in-out infinite;
-  }
-
-  .stars::after {
-    width: 110px;
-    height: 2px;
-    top: 19vh;
-    left: -130px;
-    right: auto;
-    bottom: auto;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent);
-    transform: rotate(-18deg);
-    animation: shootingStar 9s linear infinite;
-  }
-
-  @keyframes starDrift { to { background-position: 132px 18px, 244px 72px; } }
-  @keyframes twinkle { 50% { opacity: .35; } }
-  @keyframes shootingStar {
-    0%, 58% { transform: translateX(0) rotate(-18deg); opacity: 0; }
-    62% { opacity: 1; }
-    74% { transform: translateX(120vw) rotate(-18deg); opacity: 0; }
-    100% { opacity: 0; }
-  }
+  @keyframes fireflyGlow { 0%, 100% { opacity: .3; } 50% { opacity: .95; } }
 
   .card {
     width: 100%;
@@ -148,11 +118,11 @@
     bottom: 0;
     background: var(--surface);
     border-radius: 0 0 20px 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 12px 32px rgba(0,0,0,0.22);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.28), 0 12px 32px rgba(0,0,0,0.34);
     z-index: -1;
   }
 
-  .wave-top {
+  .foliage-top {
     position: absolute;
     top: 0;
     left: 0;
@@ -165,21 +135,21 @@
     z-index: 0;
   }
 
-  .wave-track {
+  .foliage-track {
     display: flex;
     width: 200%;
     height: 56px;
-    animation: cardWaves 5s linear infinite;
+    animation: cardFoliage 6s linear infinite;
   }
 
-  .wave-track svg {
+  .foliage-track svg {
     width: 50%;
     height: 56px;
     flex: none;
     display: block;
   }
 
-  @keyframes cardWaves { to { transform: translateX(-50%); } }
+  @keyframes cardFoliage { to { transform: translateX(-50%); } }
 
   .content { position: relative; z-index: 1; }
 
@@ -204,7 +174,7 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #FCF3D9;
+    background: var(--card-bg);
     border: 1.5px solid transparent;
     border-radius: 16px;
     padding: 16px 18px;
@@ -213,11 +183,11 @@
     transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
   }
 
-  .page-link:hover { transform: translateY(-2px); border-color: var(--duck-bill); background: #FBEBC0; }
+  .page-link:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--card-bg-hover); }
   .page-text { flex: 1; min-width: 0; }
   .page-title { font-family: 'Fraunces', serif; font-weight: 500; font-size: 17px; margin: 0 0 2px; }
   .page-desc { font-size: 13px; color: var(--ink-soft); margin: 0; line-height: 1.4; }
-  .page-arrow { color: var(--duck-bill); font-size: 18px; flex-shrink: 0; }
+  .page-arrow { color: var(--accent); font-size: 18px; flex-shrink: 0; }
 
   .footer-note {
     font-size: 12.5px;
@@ -230,44 +200,47 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    body, .wave-track, .moon, .stars, .stars::before, .stars::after { animation: none; }
+    body, .foliage-track, .moon, .firefly { animation: none; }
   }
 </style>
 </head>
 <body>
-  <div class="night-sky" aria-hidden="true">
-    <div class="stars"></div>
+  <div class="canopy-sky" aria-hidden="true">
     <div class="moon"></div>
+    <div class="firefly" style="top: 12%; left: 18%; animation-delay: -1.2s, -0.4s;"></div>
+    <div class="firefly" style="top: 28%; left: 62%; animation-delay: -3.6s, -1.8s;"></div>
+    <div class="firefly" style="top: 40%; left: 30%; animation-delay: -0.8s, -2.6s;"></div>
+    <div class="firefly" style="top: 20%; left: 78%; animation-delay: -5s, -0.9s;"></div>
+    <div class="firefly" style="top: 46%; left: 10%; animation-delay: -2.2s, -3.1s;"></div>
+    <div class="firefly" style="top: 8%; left: 46%; animation-delay: -4.1s, -1.3s;"></div>
   </div>
 
   <main class="card">
-    <div class="wave-top" aria-hidden="true">
-      <div class="wave-track">
+    <div class="foliage-top" aria-hidden="true">
+      <div class="foliage-track">
         <svg viewBox="0 0 500 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,24 C45,6 85,6 125,24 S210,42 250,24 S335,6 375,24 S460,42 500,24 L500,56 L0,56 Z" fill="#A9D8E6"/>
-          <path d="M0,33 C45,16 85,16 125,31 S210,46 250,31 S335,16 375,31 S460,46 500,31 L500,56 L0,56 Z" fill="#5FA8C4"/>
-          <path d="M0,41 C50,28 90,28 130,40 S220,52 250,40 S340,28 380,40 S465,52 500,40 L500,56 L0,56 Z" fill="#8B7BAE" opacity="0.92"/>
+          <path d="M0,24 C45,6 85,6 125,24 S210,42 250,24 S335,6 375,24 S460,42 500,24 L500,56 L0,56 Z" fill="#BFE8C9"/>
+          <path d="M0,33 C45,16 85,16 125,31 S210,46 250,31 S335,16 375,31 S460,46 500,31 L500,56 L0,56 Z" fill="#5FA97A"/>
+          <path d="M0,41 C50,28 90,28 130,40 S220,52 250,40 S340,28 380,40 S465,52 500,40 L500,56 L0,56 Z" fill="#1F4A2E" opacity="0.92"/>
         </svg>
         <svg viewBox="0 0 500 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,24 C45,6 85,6 125,24 S210,42 250,24 S335,6 375,24 S460,42 500,24 L500,56 L0,56 Z" fill="#A9D8E6"/>
-          <path d="M0,33 C45,16 85,16 125,31 S210,46 250,31 S335,16 375,31 S460,46 500,31 L500,56 L0,56 Z" fill="#5FA8C4"/>
-          <path d="M0,41 C50,28 90,28 130,40 S220,52 250,40 S340,28 380,40 S465,52 500,40 L500,56 L0,56 Z" fill="#8B7BAE" opacity="0.92"/>
+          <path d="M0,24 C45,6 85,6 125,24 S210,42 250,24 S335,6 375,24 S460,42 500,24 L500,56 L0,56 Z" fill="#BFE8C9"/>
+          <path d="M0,33 C45,16 85,16 125,31 S210,46 250,31 S335,16 375,31 S460,46 500,31 L500,56 L0,56 Z" fill="#5FA97A"/>
+          <path d="M0,41 C50,28 90,28 130,40 S220,52 250,40 S340,28 380,40 S465,52 500,40 L500,56 L0,56 Z" fill="#1F4A2E" opacity="0.92"/>
         </svg>
       </div>
     </div>
 
     <div class="content">
-      <h1>As águas agitam-se. Algo desperta.</h1>
+      <h1>A floresta sussurra. Algo se move nas sombras.</h1>
       <p class="subtitle">Escolhe um caminho — se te atreves.</p>
       <nav class="page-list" aria-label="Páginas">
         <a class="page-link" href="passo-a-passo.html"><div class="page-text"><p class="page-title">Passo a passo</p><p class="page-desc">Regista o teu movimento diário, sem pressão.</p></div><div class="page-arrow">→</div></a>
         <a class="page-link" href="equipa-pokemon.html"><div class="page-text"><p class="page-title">A minha equipa Pokémon</p><p class="page-desc">Seis companheiros, seis maneiras de causar confusão.</p></div><div class="page-arrow">→</div></a>
-        <a class="page-link" href="week_planner_27_31_jul_2026.html"><div class="page-text"><p class="page-title">Plano da semana</p><p class="page-desc">Navegar as ondas da semana sem naufragar.</p></div><div class="page-arrow">→</div></a>
+        <a class="page-link" href="agenda-diaria.html"><div class="page-text"><p class="page-title">Agenda diária</p><p class="page-desc">Cada hora do dia, a tua própria clareira.</p></div><div class="page-arrow">→</div></a>
         <a class="page-link" href="cross-stitch.html"><div class="page-text"><p class="page-title">Cross Stitch</p><p class="page-desc">Os meus mini projetos</p></div><div class="page-arrow">→</div></a>
-</a>
-
       </nav>
-      <p class="footer-note">Mais páginas hão de emergir das águas, com o tempo.</p>
+      <p class="footer-note">Mais páginas hão de brotar da floresta, com o tempo.</p>
     </div>
   </main>
 </body>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda diária</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --sky-top: #DDF2E6;
+    --sky-mid: #EEF5E9;
+    --grass: #8AB99A;
+    --surface: rgba(255,253,246,.90);
+    --surface-strong: #FFFDF6;
+    --ink: #263A32;
+    --ink-soft: #5E7168;
+    --moss: #5F8D67;
+    --moss-dark: #355A3F;
+    --moss-pale: #E7F0E4;
+    --apricot: #E8A87C;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-mid) 45%, #CFE6D3 100%);
+  }
+
+  .cloud {
+    position: fixed;
+    width: 170px;
+    height: 48px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.56);
+    z-index: 0;
+    animation: cloudFloat 30s linear infinite;
+  }
+  .cloud::before, .cloud::after { content: ''; position: absolute; border-radius: 50%; background: inherit; }
+  .cloud::before { width: 70px; height: 70px; left: 28px; bottom: 0; }
+  .cloud::after { width: 88px; height: 88px; right: 18px; bottom: 0; }
+  .cloud.one { top: 8%; left: -210px; }
+  .cloud.two { top: 22%; left: -260px; transform: scale(.7); animation-delay: -14s; }
+  @keyframes cloudFloat { to { left: 110vw; } }
+
+  .leaves { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .leaves::before, .leaves::after { content: '🍃'; position: absolute; top: -10vh; font-size: 20px; opacity: .38; animation: leafFall 15s linear infinite; }
+  .leaves::before { left: 16vw; }
+  .leaves::after { left: 74vw; animation-delay: -7s; font-size: 16px; }
+  @keyframes leafFall { to { transform: translateY(115vh) translateX(55px) rotate(290deg); } }
+
+  .wrap { width: min(780px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 56px; position: relative; z-index: 1; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 22px; flex-wrap: wrap; }
+
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #FFFDF6; border: 2px solid var(--moss); color: var(--moss-dark);
+    border-radius: 999px; padding: 10px 15px; text-decoration: none; font-weight: 600;
+    box-shadow: 0 4px 0 rgba(53,90,63,.28); transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .back:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(53,90,63,.24); }
+
+  h1 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(30px, 5.4vw, 46px); line-height: .98; margin: 0; letter-spacing: -0.02em; }
+
+  .intro {
+    background: var(--surface); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.65);
+    border-radius: 22px; padding: 18px 20px; box-shadow: 0 10px 30px rgba(53,90,63,.12);
+    line-height: 1.6; margin-bottom: 20px; font-size: 14.5px;
+  }
+
+  .loading { text-align: center; color: var(--ink-soft); font-size: 14px; padding: 36px 0; }
+
+  .date-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: var(--surface); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.68);
+    border-radius: 20px; padding: 12px 16px; box-shadow: 0 8px 24px rgba(53,90,63,.12);
+    margin-bottom: 16px;
+  }
+  .nav-arrow {
+    width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--moss);
+    background: var(--surface-strong); color: var(--moss-dark); font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .nav-arrow:hover { background: var(--moss-pale); transform: translateY(-1px); }
+  .date-info { flex: 1; text-align: center; min-width: 0; }
+  .date-label {
+    font-family: 'Fraunces', serif; font-weight: 500; font-size: 18px; color: var(--ink);
+    text-transform: capitalize;
+  }
+  .today-tag {
+    font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; background: var(--moss); color: white; border-radius: 999px;
+    padding: 2px 9px; margin-left: 8px; vertical-align: middle;
+  }
+  .today-btn {
+    display: block; margin: 4px auto 0; background: none; border: none; color: var(--moss-dark);
+    font-family: 'Work Sans', sans-serif; font-size: 12.5px; font-weight: 600; text-decoration: underline;
+    cursor: pointer; padding: 2px 4px;
+  }
+
+  .timeline-panel {
+    background: var(--surface); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.68);
+    border-radius: 22px; padding: 14px; box-shadow: 0 10px 30px rgba(53,90,63,.14);
+  }
+  .hour-row {
+    display: flex; align-items: center; gap: 14px; padding: 9px 10px; border-radius: 14px;
+    background: rgba(255,253,246,.82); margin-bottom: 7px; transition: background .15s ease;
+  }
+  .hour-row:last-child { margin-bottom: 0; }
+  .hour-row.current-hour { background: var(--moss-pale); outline: 1.5px dashed rgba(95,141,103,.45); outline-offset: -1.5px; }
+  .hour-label {
+    width: 58px; flex-shrink: 0; font-weight: 700; font-size: 13px; color: var(--moss-dark);
+    font-variant-numeric: tabular-nums;
+  }
+  .hour-input {
+    flex: 1; min-width: 0; border: 1.5px solid transparent; background: transparent;
+    font-family: 'Work Sans', sans-serif; font-size: 14.5px; color: var(--ink);
+    padding: 8px 10px; border-radius: 10px; transition: background .15s ease, border-color .15s ease;
+  }
+  .hour-input::placeholder { color: #A9B7A6; }
+  .hour-input:focus { outline: none; background: #fff; border-color: var(--moss); }
+
+  .clear-row { text-align: center; margin-top: 14px; }
+  .clear-btn {
+    background: none; border: none; color: var(--ink-soft); font-family: 'Work Sans', sans-serif;
+    font-size: 12.5px; text-decoration: underline; cursor: pointer; padding: 4px 8px;
+  }
+  .clear-btn:hover { color: var(--moss-dark); }
+
+  .footer-note { font-size: 12.5px; color: var(--ink-soft); text-align: center; line-height: 1.6; margin: 22px 0 0; }
+
+  @media (max-width: 620px) {
+    .wrap { padding-top: 16px; }
+    .top { flex-direction: column; align-items: flex-start; gap: 10px; }
+    h1 { font-size: 30px; }
+    .hour-label { width: 46px; font-size: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, .leaves::before, .leaves::after { animation: none; }
+  }
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="cloud one" aria-hidden="true"></div>
+  <div class="cloud two" aria-hidden="true"></div>
+  <div class="leaves" aria-hidden="true"></div>
+  <main class="wrap">
+    <header class="top">
+      <a class="back" href="index.html">← Voltar à floresta</a>
+      <h1>Agenda diária</h1>
+    </header>
+    <p class="intro">Uma clareira para cada hora do dia. Escreve o que encaixa, apaga o que não precisas — e o dia seguinte começa sempre em branco. Os dados ficam guardados neste browser e sincronizam com o Firebase, se estiver ligado.</p>
+    <section id="app"><div class="loading">a preparar a clareira…</div></section>
+  </main>
+<script>
+const HOURS = Array.from({ length: 17 }, (_, i) => i + 7); // 07:00 .. 23:00
+const TRACKER_DOC_ID = "agenda-diaria";
+const LOCAL_KEY = "ducking-around-agenda-diaria";
+let trackerRef = null;
+try { if (typeof getTrackerRef === 'function') trackerRef = getTrackerRef(TRACKER_DOC_ID); } catch (error) { console.warn('Firebase indisponível; a usar armazenamento local.', error); }
+
+let state = { dates: {} };
+let currentDate = new Date();
+let saveTimer = null;
+
+function isoDate(d) { const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; }
+function normaliseState(value) { const safe = value && typeof value === 'object' ? value : {}; return { dates: safe.dates && typeof safe.dates === 'object' ? safe.dates : {} }; }
+function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+async function loadState() {
+  try { const localData = localStorage.getItem(LOCAL_KEY); if (localData) state = normaliseState(JSON.parse(localData)); } catch (error) { console.warn('Não foi possível ler os dados locais.', error); }
+  if (!trackerRef) return;
+  try { const doc = await trackerRef.get(); if (doc.exists) { state = normaliseState(doc.data()); localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } } catch (error) { console.warn('Sem ligação ao Firebase; a usar dados locais.', error); }
+}
+
+async function saveState() {
+  state = normaliseState(state);
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch (error) { console.warn('Não foi possível guardar localmente.', error); }
+  if (!trackerRef) return;
+  try { await trackerRef.set(state); } catch (error) { console.warn('Não foi possível sincronizar com o Firebase.', error); }
+}
+
+function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 700); }
+
+function formatLabel(d) {
+  const s = new Intl.DateTimeFormat('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function shiftDay(delta) { const d = new Date(currentDate); d.setDate(d.getDate() + delta); currentDate = d; render(); }
+
+function render() {
+  const iso = isoDate(currentDate);
+  const todayIso = isoDate(new Date());
+  const isToday = iso === todayIso;
+  const dayData = state.dates[iso] || {};
+  const nowHour = new Date().getHours();
+  const label = formatLabel(currentDate);
+
+  const rowsHtml = HOURS.map(h => {
+    const hh = String(h).padStart(2, '0') + ':00';
+    const val = dayData[h] || '';
+    const isCurrent = isToday && h === nowHour;
+    return `<div class="hour-row${isCurrent ? ' current-hour' : ''}"><div class="hour-label">${hh}</div><input class="hour-input" type="text" data-hour="${h}" value="${escapeHtml(val)}" placeholder="—"></div>`;
+  }).join('');
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="date-nav">
+      <button class="nav-arrow" id="prevDay" aria-label="Dia anterior">←</button>
+      <div class="date-info">
+        <div class="date-label">${label}${isToday ? '<span class="today-tag">hoje</span>' : ''}</div>
+        ${!isToday ? '<button class="today-btn" id="gotoToday">ir para hoje</button>' : ''}
+      </div>
+      <button class="nav-arrow" id="nextDay" aria-label="Dia seguinte">→</button>
+    </div>
+    <div class="timeline-panel">${rowsHtml}</div>
+    <div class="clear-row"><button class="clear-btn" id="clearDay">limpar este dia</button></div>
+    <p class="footer-note">A agenda de amanhã começa sempre limpa. O que não escreveste hoje não fica perdido — só não faz parte deste dia.</p>
+  `;
+
+  document.getElementById('prevDay').addEventListener('click', () => shiftDay(-1));
+  document.getElementById('nextDay').addEventListener('click', () => shiftDay(1));
+  const gt = document.getElementById('gotoToday');
+  if (gt) gt.addEventListener('click', () => { currentDate = new Date(); render(); });
+  document.getElementById('clearDay').addEventListener('click', () => {
+    if (confirm('Limpar todas as entradas deste dia?')) { delete state.dates[iso]; scheduleSave(); render(); }
+  });
+  document.querySelectorAll('.hour-input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const h = inp.dataset.hour;
+      if (!state.dates[iso]) state.dates[iso] = {};
+      state.dates[iso][h] = inp.value;
+      scheduleSave();
+    });
+  });
+}
+
+(async function init() { await loadState(); render(); })();
+</script>
+</body>
+</html>
