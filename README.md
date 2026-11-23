@@ -8,6 +8,7 @@ Um cantinho pessoal que vai crescendo aos poucos.
 - 🐾 **A minha equipa Pokémon** — os seis escolhidos
 - 🕰️ **Agenda diária** — planeamento por hora, dia a dia, com sincronização Firebase
 - 🧵 **Cross Stitch** — os meus mini projetos
+- 🪡 **Os meus desenhos** — padrões de ponto cruz desenhados por mim, com gráfico, legenda de fios e notas (`desenhos.html`; cada desenho é um ficheiro em `desenhos/data/` + uma página em `desenhos/`)
 
 ## O que aí vem
 - certificações (tracking de progresso)

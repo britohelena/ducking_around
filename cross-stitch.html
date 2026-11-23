@@ -6,18 +6,20 @@
   <title>Cross Stitch Projects 🪡</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #fff6f8;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --primary: #f08da8;
-      --primary-hover: #e07291;
-      --accent: #b2d8d8;
-      --text: #594a4e;
-      --text-muted: #8c7b80;
-      --border-radius: 20px;
-      --shadow: 0 8px 24px rgba(240, 141, 168, 0.15);
+      --bg-color: #EEF5E9;
+      --card-bg: rgba(255, 253, 246, 0.92);
+      --primary: #5F8D67;
+      --primary-hover: #355A3F;
+      --accent: #8AB99A;
+      --text: #263A32;
+      --text-muted: #5E7168;
+      --moss-dark: #355A3F;
+      --moss-pale: #E7F0E4;
+      --border-radius: 22px;
+      --shadow: 0 10px 30px rgba(53, 90, 63, 0.14);
     }
 
     * {
@@ -27,8 +29,8 @@
     }
 
     body {
-      font-family: 'Nunito', sans-serif;
-      background-color: var(--bg-color);
+      font-family: 'Work Sans', sans-serif;
+      background: linear-gradient(to bottom, #DDF2E6 0%, #EEF5E9 45%, #CFE6D3 76%, #8AB99A 100%) fixed;
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
@@ -100,28 +102,28 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: white;
-      color: var(--text);
+      background: #FFFDF6;
+      color: var(--moss-dark);
       text-decoration: none;
       padding: 10px 22px;
       border-radius: 999px;
-      font-weight: 700;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      transition: all 0.25s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 0 rgba(53, 90, 63, 0.28);
+      transition: transform .15s ease, box-shadow .15s ease;
       margin-bottom: 24px;
-      border: 2px solid #ffe3ec;
+      border: 2px solid var(--primary);
     }
 
     .back-btn:hover {
       transform: translateY(-2px);
-      border-color: var(--primary);
-      color: var(--primary);
+      box-shadow: 0 6px 0 rgba(53, 90, 63, 0.24);
     }
 
     h1 {
-      font-family: 'Fredoka', cursive;
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
       font-size: 2.8rem;
-      color: #df6d8d;
+      color: var(--moss-dark);
       letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
@@ -145,7 +147,7 @@
       border-radius: var(--border-radius);
       overflow: hidden;
       box-shadow: var(--shadow);
-      border: 2px solid #fff;
+      border: 1px solid rgba(255, 255, 255, 0.7);
       display: flex;
       flex-direction: column;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
@@ -153,13 +155,13 @@
 
     .card:hover {
       transform: translateY(-6px) scale(1.01);
-      box-shadow: 0 14px 28px rgba(240, 141, 168, 0.25);
+      box-shadow: 0 14px 28px rgba(53, 90, 63, 0.24);
     }
 
     .card-img-wrapper {
       width: 100%;
       height: 240px;
-      background: #ffeef2;
+      background: var(--moss-pale);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -187,7 +189,8 @@
     }
 
     .card-title {
-      font-family: 'Fredoka', cursive;
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
       font-size: 1.25rem;
       color: var(--text);
       line-height: 1.3;
@@ -198,7 +201,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1px dashed #eedce2;
+      border-top: 1px dashed #C9DCC9;
       padding-top: 12px;
     }
 
@@ -206,13 +209,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background-color: #eaf7f7;
-      color: #3b7a7a;
+      background-color: var(--moss-pale);
+      color: var(--moss-dark);
       font-size: 0.85rem;
       font-weight: 700;
       padding: 5px 12px;
       border-radius: 999px;
-      border: 1px solid #c2ecec;
+      border: 1px solid #C9DCC9;
     }
   </style>
 </head>
@@ -225,8 +228,8 @@
     <span class="floating-item">✨</span>
     <span class="floating-item">✂️</span>
     <span class="floating-item">🧵</span>
-    <span class="floating-item">🌸</span>
-    <span class="floating-item">💖</span>
+    <span class="floating-item">🍃</span>
+    <span class="floating-item">🌿</span>
   </div>
 
   <div class="container">

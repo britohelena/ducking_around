@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Os meus desenhos 🧵</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --card-bg: rgba(255, 253, 246, 0.92);
+      --primary: #5F8D67;
+      --text: #263A32;
+      --text-muted: #5E7168;
+      --moss-dark: #355A3F;
+      --moss-pale: #E7F0E4;
+      --border-radius: 22px;
+      --shadow: 0 10px 30px rgba(53, 90, 63, 0.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background: linear-gradient(to bottom, #DDF2E6 0%, #EEF5E9 45%, #CFE6D3 76%, #8AB99A 100%) fixed;
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+    header { text-align: center; margin-bottom: 40px; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFDF6;
+      color: var(--moss-dark);
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      box-shadow: 0 4px 0 rgba(53, 90, 63, 0.28);
+      transition: transform .15s ease, box-shadow .15s ease;
+      margin: 0 6px 24px;
+      border: 2px solid var(--primary);
+    }
+    .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(53, 90, 63, 0.24); }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 2.8rem;
+      color: var(--moss-dark);
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle { font-size: 1.1rem; color: var(--text-muted); font-style: italic; }
+
+    .designs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+    .card:hover, .card:focus-visible {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 14px 28px rgba(53, 90, 63, 0.24);
+      outline: none;
+    }
+
+    .card-img-wrapper {
+      height: 260px;
+      padding: 14px;
+      background: var(--moss-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-img-wrapper canvas {
+      max-width: 100%;
+      max-height: 100%;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+      transition: transform 0.4s ease;
+    }
+    .card:hover canvas { transform: scale(1.05); }
+
+    .card-content { padding: 18px 20px; display: flex; flex-direction: column; flex-grow: 1; gap: 8px; }
+    .card-title { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.25rem; line-height: 1.3; }
+    .card-blurb { font-size: 0.95rem; color: var(--text-muted); }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px dashed #C9DCC9;
+      padding-top: 12px;
+      margin-top: auto;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--moss-pale);
+      color: var(--moss-dark);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid #C9DCC9;
+    }
+    .badge.size { background-color: #FFF4D7; color: #7a5a24; border-color: #EBD9A8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="index.html" class="back-btn">← Voltar à floresta</a>
+      <a href="cross-stitch.html" class="back-btn">🪡 Cross Stitch Projects</a>
+      <h1>Os meus desenhos 🧵</h1>
+      <p class="subtitle">Padrões de ponto cruz desenhados por mim — escolhe um para ver o gráfico.</p>
+    </header>
+
+    <main class="designs-grid" id="grid"></main>
+  </div>
+
+  <script src="desenhos/pattern-core.js"></script>
+  <script src="desenhos/data/gatinho-natal.js"></script>
+  <script src="desenhos/data/cao-de-natal.js"></script>
+  <script src="desenhos/data/marcador-matilde.js"></script>
+  <script src="desenhos/data/gumi-gumi.js"></script>
+  <script>
+    const grid = document.getElementById('grid');
+    for (const p of window.PATTERNS) {
+      PatternCore.prepare(p);
+      const card = document.createElement('a');
+      card.className = 'card';
+      card.href = `desenhos/${p.id}.html`;
+      card.innerHTML =
+        `<div class="card-img-wrapper"><canvas role="img" aria-label="Pré-visualização de ${p.title}"></canvas></div>` +
+        `<div class="card-content">` +
+          `<h2 class="card-title"></h2><p class="card-blurb"></p>` +
+          `<div class="card-meta"><span class="badge size">📐 ${p.cols} × ${p.rows}</span><span class="badge">🧵 ${p.ncol} Cores</span></div>` +
+        `</div>`;
+      card.querySelector('.card-title').textContent = p.title;
+      card.querySelector('.card-blurb').textContent = p.blurb;
+      grid.appendChild(card);
+
+      const cell = Math.max(4, Math.ceil(520 / Math.max(p.cols, p.rows)));
+      PatternCore.render(p, card.querySelector('canvas').getContext('2d'),
+        { cell, mode: 'preview', grid: false, coord: false, margin: 0, dpr: 1 });
+    }
+  </script>
+</body>
+</html>
