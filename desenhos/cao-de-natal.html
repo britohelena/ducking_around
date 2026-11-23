@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cão de Natal com hastes de rena — padrão de ponto cruz</title>
+<link rel="stylesheet" href="pattern.css">
+</head>
+<body data-pattern="cao-de-natal">
+
+<header class="top">
+  <a class="back" href="../desenhos.html">← Os meus desenhos</a>
+  <h1 id="title"></h1>
+  <span class="sub" id="subline"></span>
+</header>
+
+<div class="layout">
+  <section class="panel viewer">
+    <div class="toolbar">
+      <div class="seg" id="modeSeg" role="group" aria-label="Modo de vista">
+        <button data-mode="color" class="on">Cor completa</button>
+        <button data-mode="symbol">Só símbolos</button>
+        <button data-mode="both">Cor + símbolos</button>
+        <button data-mode="preview">Pré-visualização</button>
+      </div>
+      <div class="zoom">
+        <button class="btn" id="zOut" title="Reduzir (–)">−</button>
+        <input type="range" id="zoom" min="6" max="64" value="22">
+        <button class="btn" id="zIn" title="Ampliar (+)">+</button>
+        <span class="val" id="zVal">22 px</span>
+        <button class="btn" id="zFit">Ajustar</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="chkGrid" checked> Grelha</label>
+      <label class="chk"><input type="checkbox" id="chkCoord" checked> Coordenadas</label>
+      <label class="chk"><input type="checkbox" id="chkTrack"> Marcar pontos feitos</label>
+      <button class="btn" id="btnPrint">🖨 Imprimir A4</button>
+      <button class="btn" id="btnPng">Guardar PNG</button>
+    </div>
+    <div class="scroll" id="scroll"><canvas id="cv"></canvas></div>
+    <div class="status" id="status"></div>
+  </section>
+
+  <aside class="panel side">
+    <h2>Detalhes do padrão</h2>
+    <dl class="facts" id="facts"></dl>
+
+    <h2>Legenda de fios</h2>
+    <table class="legend" id="legend"></table>
+    <p class="hint">Clica numa linha para isolar essa cor no gráfico; clica de novo para limpar.</p>
+
+    <h2>Progresso</h2>
+    <div class="bar"><i id="pb"></i></div>
+    <div class="hint" id="pt"></div>
+    <button class="btn" id="reset" style="margin-top:8px">Limpar progresso</button>
+
+    <h2>Notas de correspondência de cores</h2>
+    <div class="notes" id="notes"></div>
+
+    <h2>Como bordar e acabar</h2>
+    <div class="notes" id="howto"></div>
+  </aside>
+</div>
+
+<!-- Páginas A4 (preenchidas por script) -->
+<div class="print-only">
+  <div class="pp">
+    <h1 id="titleP"></h1>
+    <p class="meta" id="metaP"></p>
+    <div class="cover-grid">
+      <div><h3>Desenho acabado</h3><canvas id="cvCover"></canvas></div>
+      <div><h3>Legenda de fios</h3><table class="legend" id="legendP"></table></div>
+    </div>
+    <h3>Notas</h3>
+    <div class="notes" id="notesP"></div>
+  </div>
+  <div class="pp">
+    <h3>Gráfico · símbolos sobre cor suave · linha grossa a cada 10 pontos · setas = centro</h3>
+    <canvas id="cvPrint"></canvas>
+  </div>
+</div>
+
+<script src="pattern-core.js"></script>
+<script src="data/cao-de-natal.js"></script>
+<script src="pattern-page.js"></script>
+</body>
+</html>
