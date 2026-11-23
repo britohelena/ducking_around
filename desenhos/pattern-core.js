@@ -49,7 +49,9 @@ const PatternCore = (function(){
     prepare(P);
     const COLS = P.cols, ROWS = P.rows, GRID = P.grid, FLOSS = P.floss;
     const cell = opts.cell, m = opts.margin;
-    const W = COLS*cell + m*2, H = ROWS*cell + m*2;
+    // x0/y0/cw/ch desenham só uma secção do gráfico (impressão em várias páginas)
+    const x0 = opts.x0||0, y0 = opts.y0||0, cw = opts.cw||COLS, ch = opts.ch||ROWS;
+    const W = cw*cell + m*2, H = ch*cell + m*2;
     const dpr = opts.dpr || 1;
     c.canvas.width = Math.round(W*dpr); c.canvas.height = Math.round(H*dpr);
     c.setTransform(dpr,0,0,dpr,0,0);
@@ -58,18 +60,18 @@ const PatternCore = (function(){
 
     const preview = opts.mode === "preview";
     if (preview){
-      c.fillStyle = "#f4f6f9"; c.fillRect(0,0,COLS*cell,ROWS*cell);
+      c.fillStyle = P.fabric || "#f4f6f9"; c.fillRect(0,0,cw*cell,ch*cell);
       if (cell >= 8){
         c.fillStyle = "rgba(90,100,120,.28)";
         const r = Math.max(.6, cell*.055);
-        for (let y=0;y<=ROWS;y++) for (let x=0;x<=COLS;x++){ c.beginPath(); c.arc(x*cell,y*cell,r,0,6.2832); c.fill(); }
+        for (let y=0;y<=ch;y++) for (let x=0;x<=cw;x++){ c.beginPath(); c.arc(x*cell,y*cell,r,0,6.2832); c.fill(); }
       }
     }
 
-    for (let y=0;y<ROWS;y++){
-      for (let x=0;x<COLS;x++){
+    for (let y=y0;y<y0+ch;y++){
+      for (let x=x0;x<x0+cw;x++){
         const k = GRID[y][x]; if (k === ".") continue;
-        const f = FLOSS[k]; const px = x*cell, py = y*cell;
+        const f = FLOSS[k]; const px = (x-x0)*cell, py = (y-y0)*cell;
         const dim = opts.iso && opts.iso !== k;
         if (preview){
           drawCross(c, px, py, cell, f.hex, dim);
@@ -95,24 +97,30 @@ const PatternCore = (function(){
       }
     }
 
-    if (opts.grid && (!preview || cell>=14)){
-      c.lineWidth = 1;
-      if (cell >= 8){
-        c.strokeStyle = preview ? "rgba(0,0,0,.10)" : "#c4c9d1"; c.beginPath();
-        for (let x=0;x<=COLS;x++){ if (x%5===0) continue; c.moveTo(Math.round(x*cell)+.5,0); c.lineTo(Math.round(x*cell)+.5,ROWS*cell); }
-        for (let y=0;y<=ROWS;y++){ if (y%5===0) continue; c.moveTo(0,Math.round(y*cell)+.5); c.lineTo(COLS*cell,Math.round(y*cell)+.5); }
-        c.stroke();
-      }
-      c.strokeStyle = preview ? "rgba(0,0,0,.28)" : "#7a8190"; c.beginPath();
-      for (let x=0;x<=COLS;x+=5){ if (x%10===0) continue; c.moveTo(Math.round(x*cell)+.5,0); c.lineTo(Math.round(x*cell)+.5,ROWS*cell); }
-      for (let y=0;y<=ROWS;y+=5){ if (y%10===0) continue; c.moveTo(0,Math.round(y*cell)+.5); c.lineTo(COLS*cell,Math.round(y*cell)+.5); }
-      c.stroke();
-      c.strokeStyle = "#111"; c.lineWidth = opts.heavy || (cell>=14?2:1.4); c.beginPath();
-      for (let x=0;x<=COLS;x+=10){ c.moveTo(x*cell,0); c.lineTo(x*cell,ROWS*cell); }
-      for (let y=0;y<=ROWS;y+=10){ c.moveTo(0,y*cell); c.lineTo(COLS*cell,y*cell); }
-      c.stroke();
+    // Pesponto: [x1,y1,x2,y2,chave], coordenadas em pontos (pode usar meios-pontos)
+    for (const b of (P.back || [])){
+      const f = FLOSS[b[4]] || {hex:"#fff"};
+      const X1=(b[0]-x0)*cell, Y1=(b[1]-y0)*cell, X2=(b[2]-x0)*cell, Y2=(b[3]-y0)*cell;
+      const lw = Math.max(2, cell*.16);
+      c.lineCap = "round";
+      c.strokeStyle = preview ? "rgba(0,0,0,.35)" : "#333"; c.lineWidth = lw+2; c.beginPath(); c.moveTo(X1,Y1); c.lineTo(X2,Y2); c.stroke();
+      c.strokeStyle = f.hex; c.lineWidth = lw; c.beginPath(); c.moveTo(X1,Y1); c.lineTo(X2,Y2); c.stroke();
     }
-    c.strokeStyle = "#111"; c.lineWidth = 1.5; c.strokeRect(0,0,COLS*cell,ROWS*cell);
+
+    if (opts.grid && (!preview || cell>=14)){
+      const vline = (x,col,lw)=>{ c.strokeStyle=col; c.lineWidth=lw; c.beginPath(); const px=Math.round((x-x0)*cell)+.5; c.moveTo(px,0); c.lineTo(px,ch*cell); c.stroke(); };
+      const hline = (y,col,lw)=>{ c.strokeStyle=col; c.lineWidth=lw; c.beginPath(); const py=Math.round((y-y0)*cell)+.5; c.moveTo(0,py); c.lineTo(cw*cell,py); c.stroke(); };
+      const heavy = opts.heavy || (cell>=14?2:1.4);
+      if (cell >= 8){
+        for (let x=x0;x<=x0+cw;x++){ if (x%5!==0) vline(x, preview?"rgba(0,0,0,.10)":"#c4c9d1", 1); }
+        for (let y=y0;y<=y0+ch;y++){ if (y%5!==0) hline(y, preview?"rgba(0,0,0,.10)":"#c4c9d1", 1); }
+      }
+      for (let x=x0;x<=x0+cw;x++){ if (x%5===0 && x%10!==0) vline(x, preview?"rgba(0,0,0,.28)":"#7a8190", 1); }
+      for (let y=y0;y<=y0+ch;y++){ if (y%5===0 && y%10!==0) hline(y, preview?"rgba(0,0,0,.28)":"#7a8190", 1); }
+      for (let x=x0;x<=x0+cw;x++){ if (x%10===0) vline(x, "#111", heavy); }
+      for (let y=y0;y<=y0+ch;y++){ if (y%10===0) hline(y, "#111", heavy); }
+    }
+    c.strokeStyle = "#111"; c.lineWidth = 1.5; c.strokeRect(0,0,cw*cell,ch*cell);
 
     if (opts.coord){
       const fs = opts.fs || Math.max(9, Math.min(15, Math.round(cell*.55)));
@@ -120,22 +128,27 @@ const PatternCore = (function(){
       c.textAlign = "center"; c.textBaseline = "middle";
       const lab = (n,x,y)=>c.fillText(String(n),x,y);
       const g = Math.round(m/2);
-      for (let n=10;n<=COLS;n+=10){ lab(n,n*cell,-g); lab(n,n*cell,ROWS*cell+g); }
-      for (let n=10;n<=ROWS;n+=10){ lab(n,-g,n*cell); lab(n,COLS*cell+g,n*cell); }
-      lab(1, cell/2, -g); lab(1,-g,cell/2);
+      for (let n=x0;n<=x0+cw;n++){ if (n>0 && n%10===0){ lab(n,(n-x0)*cell,-g); lab(n,(n-x0)*cell,ch*cell+g); } }
+      for (let n=y0;n<=y0+ch;n++){ if (n>0 && n%10===0){ lab(n,-g,(n-y0)*cell); lab(n,cw*cell+g,(n-y0)*cell); } }
+      if (x0===0) lab(1,cell/2,-g);
+      if (y0===0) lab(1,-g,cell/2);
       c.strokeStyle = "#111"; c.lineWidth = 1; c.beginPath();
       const t = Math.max(3,cell*.22);
-      for (let x=0;x<=COLS;x+=5){ c.moveTo(x*cell,0); c.lineTo(x*cell,-t); c.moveTo(x*cell,ROWS*cell); c.lineTo(x*cell,ROWS*cell+t); }
-      for (let y=0;y<=ROWS;y+=5){ c.moveTo(0,y*cell); c.lineTo(-t,y*cell); c.moveTo(COLS*cell,y*cell); c.lineTo(COLS*cell+t,y*cell); }
+      for (let x=x0;x<=x0+cw;x++){ if (x%5===0){ const px=(x-x0)*cell; c.moveTo(px,0); c.lineTo(px,-t); c.moveTo(px,ch*cell); c.lineTo(px,ch*cell+t); } }
+      for (let y=y0;y<=y0+ch;y++){ if (y%5===0){ const py=(y-y0)*cell; c.moveTo(0,py); c.lineTo(-t,py); c.moveTo(cw*cell,py); c.lineTo(cw*cell+t,py); } }
       c.stroke();
     }
     if (opts.centerMarks){
       c.fillStyle = "#355A3F";
-      const cx = (COLS/2)*cell, cy = (ROWS/2)*cell, s = cell*.55;
-      c.beginPath(); c.moveTo(cx,-2); c.lineTo(cx-s/2,-2-s); c.lineTo(cx+s/2,-2-s); c.fill();
-      c.beginPath(); c.moveTo(cx,ROWS*cell+2); c.lineTo(cx-s/2,ROWS*cell+2+s); c.lineTo(cx+s/2,ROWS*cell+2+s); c.fill();
-      c.beginPath(); c.moveTo(-2,cy); c.lineTo(-2-s,cy-s/2); c.lineTo(-2-s,cy+s/2); c.fill();
-      c.beginPath(); c.moveTo(COLS*cell+2,cy); c.lineTo(COLS*cell+2+s,cy-s/2); c.lineTo(COLS*cell+2+s,cy+s/2); c.fill();
+      const cx = (COLS/2-x0)*cell, cy = (ROWS/2-y0)*cell, s = cell*.55;
+      if (cx>=0 && cx<=cw*cell){
+        c.beginPath(); c.moveTo(cx,-2); c.lineTo(cx-s/2,-2-s); c.lineTo(cx+s/2,-2-s); c.fill();
+        c.beginPath(); c.moveTo(cx,ch*cell+2); c.lineTo(cx-s/2,ch*cell+2+s); c.lineTo(cx+s/2,ch*cell+2+s); c.fill();
+      }
+      if (cy>=0 && cy<=ch*cell){
+        c.beginPath(); c.moveTo(-2,cy); c.lineTo(-2-s,cy-s/2); c.lineTo(-2-s,cy+s/2); c.fill();
+        c.beginPath(); c.moveTo(cw*cell+2,cy); c.lineTo(cw*cell+2+s,cy-s/2); c.lineTo(cw*cell+2+s,cy+s/2); c.fill();
+      }
     }
     c.restore();
     return {w:W,h:H};

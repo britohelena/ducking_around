@@ -28,6 +28,7 @@
       h += `<tr class="row" data-k="${k}"><td>${sw}</td><td><b>${f.dmc}</b></td><td>${f.name}</td>`+
            `<td class="num">${counts[k]}</td><td class="num">${(counts[k]*100/TOTAL).toFixed(1).replace(".",",")}</td></tr>`;
     }
+    if (P.back && P.backInfo) h += `<tr><td><span class="sw">╱</span></td><td><b>${P.backInfo.dmc}</b></td><td>${P.backInfo.name}</td><td class="num">${P.back.length} linhas</td><td></td></tr>`;
     h += `</tbody><tfoot><tr><td colspan="3">Total de pontos</td><td class="num">${TOTAL}</td><td class="num">100</td></tr></tfoot>`;
     return h;
   }
@@ -37,9 +38,9 @@
     return `<dt>Grelha</dt><dd>${COLS} de largura × ${ROWS} de altura</dd>`+
       `<dt>Total de pontos</dt><dd>${TOTAL}</dd>`+
       `<dt>Cores</dt><dd>${NCOL} DMC (sem misturas)</dd>`+
-      `<dt>Tecido (sugerido)</dt><dd>Aida 14 ct → ${inOf(COLS,14)} × ${inOf(ROWS,14)} pol (${cmOf(COLS,14)} × ${cmOf(ROWS,14)} cm)<br>Aida 16 ct → ${cmOf(COLS,16)} × ${cmOf(ROWS,16)} cm</dd>`+
+      `<dt>Tecido (sugerido)</dt><dd>${P.fabricLabel || "Aida 14 ct"} → ${inOf(COLS,14)} × ${inOf(ROWS,14)} pol (${cmOf(COLS,14)} × ${cmOf(ROWS,14)} cm)<br>Aida 16 ct → ${cmOf(COLS,16)} × ${cmOf(ROWS,16)} cm</dd>`+
       `<dt>Fios</dt><dd>2 de 6 por quadrado de Aida</dd>`+
-      `<dt>Pontos especiais</dt><dd>Nenhum (sem pesponto nem nós franceses)</dd>`;
+      `<dt>Pontos especiais</dt><dd>${P.special || "Nenhum (sem pesponto nem nós franceses)"}</dd>`;
   }
 
   /* ------------------------------------------------------------------- UI */
@@ -143,11 +144,28 @@
     const c1 = $("cvCover"), mm = Math.min(78, 150*COLS/ROWS);
     PatternCore.render(P, c1.getContext("2d"),{cell:30,mode:"preview",grid:false,coord:false,margin:0,dpr:1});
     c1.style.width = mm+"mm"; c1.style.height = (mm*ROWS/COLS)+"mm";
-    const c2 = $("cvPrint"), cell2 = 48;
-    PatternCore.render(P, c2.getContext("2d"),{cell:cell2,mode:"tint",grid:true,coord:true,margin:cell2,heavy:3,fs:26,dpr:1,centerMarks:true});
-    // 5 mm por ponto, reduzido se o desenho não couber numa página A4
-    const mmCell = Math.min(5, 188/(COLS+2), 255/(ROWS+2));
-    c2.style.width = ((COLS+2)*mmCell)+"mm"; c2.style.height = ((ROWS+2)*mmCell)+"mm";
+    // Uma página A4 se os pontos ficarem com >= 3,8 mm; caso contrário 2 × 2 secções
+    const host = $("chartPages"); host.innerHTML = "";
+    const fit = Math.min(190/(COLS+2), 255/(ROWS+2));
+    const single = fit >= 3.8;
+    const nx = single?1:2, ny = single?1:2, mmCell = single?Math.min(5, fit):5;
+    const tw = Math.ceil(COLS/nx), th = Math.ceil(ROWS/ny), cell2 = 40, names = ["A1","A2","B1","B2"];
+    let n = 0;
+    for (let ty=0; ty<ny; ty++) for (let tx=0; tx<nx; tx++){
+      const x0 = tx*tw, y0 = ty*th, cw = Math.min(tw,COLS-x0), ch = Math.min(th,ROWS-y0);
+      const page = document.createElement("div"); page.className = "pp";
+      page.innerHTML = single ? `<h3>Gráfico · símbolos sobre cor suave · linha grossa a cada 10 pontos · setas = centro</h3>`
+        : `<h3>Secção ${names[n]} · colunas ${x0+1}–${x0+cw} · linhas ${y0+1}–${y0+ch} (de ${COLS} × ${ROWS})</h3>`;
+      const cvs = document.createElement("canvas"); page.appendChild(cvs);
+      PatternCore.render(P, cvs.getContext("2d"),{cell:cell2,mode:"tint",grid:true,coord:true,margin:cell2,heavy:3,fs:22,dpr:1,x0,y0,cw,ch,centerMarks:single});
+      cvs.style.width = ((cw+2)*mmCell)+"mm"; cvs.style.height = ((ch+2)*mmCell)+"mm";
+      if (!single){
+        const map = document.createElement("p"); map.className = "meta";
+        map.textContent = "Mapa: A1 canto superior esquerdo · A2 superior direito · B1 inferior esquerdo · B2 inferior direito. Os números das margens são as coordenadas absolutas do desenho completo.";
+        page.appendChild(map);
+      }
+      host.appendChild(page); n++;
+    }
   }
   $("btnPrint").onclick = ()=>{ preparePrint(); window.print(); };
   window.addEventListener("beforeprint", preparePrint);
